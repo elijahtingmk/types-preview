@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Book a scoping call | Dr Elijah Ting, ED – L&amp;D</title>
+  <meta name="description" content="Leave a message to talk about a personality assessment in your work or team.">
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,500;0,6..72,600;1,6..72,450;1,6..72,500&family=Source+Sans+3:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+  <a class="skip" href="#main">Skip to content</a>
+  <div id="preview-banner"></div>
+  <header class="site-header" id="site-header"></header>
+  <main id="main">
+    <section class="hero">
+      <div class="wrap measure">
+        <h1>Book a scoping call</h1>
+        <p class="lede">If you want to talk about what a personality assessment can do in your work, or in a team, leave a message. Dr Elijah Ting will get back to you.</p>
+      </div>
+    </section>
+    <section class="section">
+      <div class="wrap">
+        <form class="form" id="enquiry-form">
+          <label>Name
+            <input type="text" name="name" required maxlength="100" autocomplete="name">
+          </label>
+          <label>Email
+            <input type="email" name="email" required maxlength="200" autocomplete="email">
+          </label>
+          <label>Organisation (optional)
+            <input type="text" name="organisation" maxlength="150" autocomplete="organization">
+          </label>
+          <label>What is this about?
+            <select name="need" required>
+              <option value="types">16-type profile</option>
+              <option value="bigfive">Big Five assessment</option>
+              <option value="coaching">1:1 coaching</option>
+              <option value="unsure">Not sure yet</option>
+            </select>
+          </label>
+          <label>Message (optional)
+            <textarea name="message" maxlength="2000"></textarea>
+          </label>
+          <div>
+            <button class="btn btn-primary" type="submit">Send the enquiry</button>
+          </div>
+          <p class="ok" id="enquiry-ok" hidden>Thank you. Your message has been sent.</p>
+          <p class="instruction">In this preview, the form does not yet send a live message.</p>
+        </form>
+      </div>
+    </section>
+  </main>
+  <footer class="site-footer" id="site-footer"></footer>
+  <script src="js/chrome.js"></script>
+  <script src="js/contact.js"></script>
+</body>
+</html>

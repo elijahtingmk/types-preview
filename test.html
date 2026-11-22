@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Start the profile | 16-type personality profile</title>
+  <meta name="description" content="Answer 40 short statements for a 16-type personality profile.">
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,500;0,6..72,600;1,6..72,450;1,6..72,500&family=Source+Sans+3:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+  <a class="skip" href="#main">Skip to content</a>
+  <div id="preview-banner"></div>
+  <header class="site-header" id="site-header"></header>
+  <main id="main">
+    <section class="section" style="padding-top: 2.5rem;">
+      <div class="wrap" style="max-width: 44rem;">
+        <h1>16-type personality profile</h1>
+        <p class="instruction">Rate how accurately each statement describes you. Answer as you usually are, not as you wish to be. There is no pass mark.</p>
+        <div class="test-progress">
+          <div class="meta"><span id="progress-label"></span><span id="progress-count"></span></div>
+          <div class="bar" aria-hidden="true"><span id="progress-bar"></span></div>
+        </div>
+        <div id="items"></div>
+        <div class="test-nav">
+          <button class="btn btn-line" type="button" id="back-btn">Back</button>
+          <button class="btn btn-primary" type="button" id="next-btn">Next</button>
+        </div>
+      </div>
+    </section>
+  </main>
+  <footer class="site-footer" id="site-footer"></footer>
+  <script src="js/chrome.js"></script>
+  <script src="js/items.js"></script>
+  <script src="js/score.js"></script>
+  <script src="js/test.js"></script>
+</body>
+</html>
