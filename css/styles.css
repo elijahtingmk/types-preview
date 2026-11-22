@@ -304,24 +304,30 @@ p:last-child { margin-bottom: 0; }
   line-height: 1.35;
 }
 .scale {
-  display: grid;
-  grid-template-columns: repeat(5, 1fr);
+  display: flex;
+  flex-direction: column;
   gap: 0.4rem;
 }
 .scale label {
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   align-items: center;
-  gap: 0.35rem;
-  font-size: 0.72rem;
-  line-height: 1.25;
-  text-align: center;
-  color: var(--muted);
+  gap: 0.7rem;
+  min-height: 2.75rem;
+  padding: 0.55rem 0.75rem;
+  border: 1px solid var(--line);
+  border-radius: 0.55rem;
+  font-size: 0.95rem;
+  line-height: 1.3;
+  text-align: left;
+  color: var(--navy);
   cursor: pointer;
   margin: 0;
+  background: var(--white);
 }
 .scale input {
   appearance: none;
+  flex: 0 0 1.25rem;
   width: 1.25rem;
   height: 1.25rem;
   border: 2px solid var(--copper);
@@ -336,14 +342,37 @@ p:last-child { margin-bottom: 0; }
   border-color: var(--navy);
 }
 .scale input:focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; }
-.scale label:has(input:checked) { color: var(--navy); font-weight: 600; }
-@media (max-width: 639px) {
-  .scale label .full { display: none; }
-  .scale label .short { display: block; }
+.scale label:has(input:checked) {
+  color: var(--navy);
+  font-weight: 600;
+  border-color: var(--navy);
+  background: var(--paper);
 }
-@media (min-width: 640px) {
-  .scale label .short { display: none; }
-  .scale label .full { display: block; }
+@media (min-width: 720px) {
+  .scale {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 0.45rem;
+  }
+  .scale label {
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 0.4rem;
+    min-height: 0;
+    padding: 0.55rem 0.35rem 0.65rem;
+    border: none;
+    background: transparent;
+    font-size: 0.8rem;
+    line-height: 1.25;
+    text-align: center;
+    color: var(--muted);
+  }
+  .scale label:has(input:checked) {
+    background: transparent;
+    font-weight: 600;
+    color: var(--navy);
+  }
 }
 
 .test-nav {

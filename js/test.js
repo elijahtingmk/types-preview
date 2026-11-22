@@ -1,11 +1,11 @@
 (function () {
   const PAGE_SIZE = 5;
   const OPTIONS = [
-    { value: 1, full: "Very Inaccurate", short: "VI" },
-    { value: 2, full: "Moderately Inaccurate", short: "MI" },
-    { value: 3, full: "Neither Accurate Nor Inaccurate", short: "Mid" },
-    { value: 4, full: "Moderately Accurate", short: "MA" },
-    { value: 5, full: "Very Accurate", short: "VA" }
+    { value: 1, label: "Very inaccurate" },
+    { value: 2, label: "Moderately inaccurate" },
+    { value: 3, label: "Neither" },
+    { value: 4, label: "Moderately accurate" },
+    { value: 5, label: "Very accurate" }
   ];
 
   const answers = {};
@@ -56,10 +56,8 @@
             opt.value +
             '"' +
             checked +
-            '><span class="full">' +
-            opt.full +
-            '</span><span class="short">' +
-            opt.short +
+            "><span>" +
+            opt.label +
             "</span></label>"
           );
         }).join("");
