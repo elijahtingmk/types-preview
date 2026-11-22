@@ -1,13 +1,8 @@
 (function () {
   const year = new Date().getFullYear();
-  const path = (location.pathname.split("/").pop() || "index.html");
-
-  const banner = document.getElementById("preview-banner");
-  if (banner) {
-    banner.className = "preview-banner";
-    banner.innerHTML =
-      "<strong>Preview</strong> — this is not the live site. Nothing here has been published to types.drelijah.org yet.";
-  }
+  // GitHub Pages also serves /about for about.html, so match both forms.
+  let path = location.pathname.split("/").pop() || "index.html";
+  if (path.indexOf(".") === -1) path += ".html";
 
   const header = document.getElementById("site-header");
   if (header) {

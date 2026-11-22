@@ -115,16 +115,6 @@ p:last-child { margin-bottom: 0; }
   max-width: 40rem;
 }
 
-.preview-banner {
-  background: var(--navy);
-  color: var(--cream);
-  font-size: 0.9rem;
-  text-align: center;
-  padding: 0.55rem 1.25rem;
-  letter-spacing: 0.01em;
-}
-.preview-banner strong { font-weight: 600; color: var(--gold-soft); }
-
 .site-header {
   background: var(--cream);
   border-bottom: 1px solid var(--line);
@@ -483,3 +473,17 @@ p:last-child { margin-bottom: 0; }
 .prose h2:first-child { margin-top: 0; }
 .source { font-size: 0.92rem; color: var(--muted); margin-top: 2.5rem; }
 .source a { color: var(--copper); }
+
+/* Enquiry form: honeypot hidden from people, and the sent / error notices. */
+.hp { position: absolute; left: -9999px; width: 1px; height: 1px; overflow: hidden; }
+.notice {
+  max-width: 32rem;
+  margin-bottom: 1.25rem;
+  padding: 1rem 1.1rem;
+  border-radius: 0.6rem;
+  border: 1px solid var(--line);
+  background: var(--paper-2);
+}
+.notice-error { border-color: var(--copper); }
+#book { scroll-margin-top: 1.5rem; }
+[hidden] { display: none !important; }

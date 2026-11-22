@@ -3,9 +3,9 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="robots" content="noindex, nofollow">
   <title>Book a scoping call | Dr Elijah Ting, ED – L&amp;D</title>
   <meta name="description" content="Leave a message to talk about a personality assessment in your work or team.">
+  <link rel="canonical" href="https://types.drelijah.org/contact.html">
   <link rel="icon" href="favicon.svg" type="image/svg+xml">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -14,7 +14,6 @@
 </head>
 <body>
   <a class="skip" href="#main">Skip to content</a>
-  <div id="preview-banner"></div>
   <header class="site-header" id="site-header"></header>
   <main id="main">
     <section class="hero">
@@ -25,7 +24,20 @@
     </section>
     <section class="section">
       <div class="wrap">
-        <form class="form" id="enquiry-form">
+        <div id="book">
+        <p class="ok notice" id="enquiry-sent" hidden role="status">Thank you. Your message has been sent.</p>
+        <p class="notice notice-error" id="enquiry-error" hidden role="alert">Please check the form and try again.</p>
+        <!-- Posts to the enquiry endpoint on big5.drelijah.org, which saves the
+             enquiry, sends the alerts, then redirects back here with ?sent=1 or
+             ?error=…. To switch on Cloudflare Turnstile, put its site key in
+             data-turnstile-sitekey and set TURNSTILE_SECRET on the b5 Worker. -->
+        <form class="form" id="enquiry-form" data-turnstile-sitekey=""
+              action="https://big5.drelijah.org/api/enquiry" method="post">
+          <input type="hidden" name="from" value="">
+          <input type="hidden" name="started" value="">
+          <div class="hp" aria-hidden="true">
+            <label>Leave this empty <input type="text" name="website" tabindex="-1" autocomplete="off"></label>
+          </div>
           <label>Name
             <input type="text" name="name" required maxlength="100" autocomplete="name">
           </label>
@@ -37,7 +49,7 @@
           </label>
           <label>What is this about?
             <select name="need" required>
-              <option value="types">16-type profile</option>
+              <option value="types16">16-type profile</option>
               <option value="bigfive">Big Five assessment</option>
               <option value="coaching">1:1 coaching</option>
               <option value="unsure">Not sure yet</option>
@@ -46,12 +58,13 @@
           <label>Message (optional)
             <textarea name="message" maxlength="2000"></textarea>
           </label>
+          <div data-turnstile-slot></div>
           <div>
             <button class="btn btn-primary" type="submit">Send the enquiry</button>
           </div>
-          <p class="ok" id="enquiry-ok" hidden>Thank you. Your message has been sent.</p>
-          <p class="instruction">In this preview, the form does not yet send a live message.</p>
+          <p class="instruction">Your details are used only to reply to you. See the <a href="privacy.html">privacy notice</a>.</p>
         </form>
+        </div>
       </div>
     </section>
   </main>

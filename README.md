@@ -1,8 +1,6 @@
-# 16-type personality profile (preview)
+# 16-type personality profile
 
-A free Jungian-style 16-type personality profile for Dr Elijah Ting, intended — once he approves it — to live at types.drelijah.org beside [big5.drelijah.org](https://big5.drelijah.org).
-
-This repository is a **preview**. It has not been published to types.drelijah.org.
+A free Jungian-style 16-type personality profile for Dr Elijah Ting, live at [types.drelijah.org](https://types.drelijah.org) beside [big5.drelijah.org](https://big5.drelijah.org). It is served by GitHub Pages from the `main` branch; the `CNAME` file sets the custom domain.
 
 ## What it is
 
@@ -16,7 +14,7 @@ The Emotional Stability items are not used, because that trait does not map onto
 - Item wording: https://ipip.ori.org/New_IPIP-50-item-scale.htm
 - Permission (public domain, including commercial use): https://ipip.ori.org/newPermission.htm
 
-Item wording is used as published. This site does not use the Open Extended Jungian Type Scales, whose licence is not open to commercial use.
+Item wording is used as published. No items from any other type questionnaire are used.
 
 ## Scoring
 
@@ -28,19 +26,17 @@ Each of the four scales has ten items, scored 1–5. Reverse-keyed items are sco
 - Conscientiousness above 30 → J (Judging); below 30 → P (Perceiving)
 - A score of exactly 30 is marked evenly balanced; the second letter of that pair is shown
 
-Automated fixtures live in `../tests/score.test.js` (run `node tests/score.test.js` from the parent folder).
+Automated fixtures live in `tests/score.test.js` (run `node tests/score.test.js` from this folder).
 
 ## Enquiry form
 
-The contact form is stubbed in this preview and does not send mail or Telegram messages.
-
-When the site is published, it should use the same two-way alert as big5.drelijah.org: a Telegram notice to the owner, and an email through the existing Google Apps Script relay to elijah@drelijah.org, with BCC drelijah-enquiries@mail.grokbot.com. Relay URL and tokens belong only in the host environment, never in this repository.
+The contact form is a plain HTML form that posts to https://big5.drelijah.org/api/enquiry (the b5 Worker), the same endpoint as the drelijah.org contact form. The Worker saves the enquiry, sends the owner a Telegram notice and an email through the existing relay, and redirects back to `/contact?sent=1#book` (or `?error=…`). Need values: `types16`, `bigfive`, `coaching`, `unsure`. Relay URL and tokens belong only in the Worker environment, never in this repository.
 
 ## Name and trademarks
 
 This site uses **Dr Elijah Ting** / **Dr Elijah Ting, ED – L&D**. It does not use trademarked instrument names.
 
-## Local preview
+## Running locally
 
 From this folder:
 
