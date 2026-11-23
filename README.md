@@ -32,6 +32,8 @@ Automated fixtures live in `tests/score.test.js` (run `node tests/score.test.js`
 
 The contact form is a plain HTML form that posts to https://big5.drelijah.org/api/enquiry (the b5 Worker), the same endpoint as the drelijah.org contact form. The Worker saves the enquiry, sends the owner a Telegram notice and an email through the existing relay, and redirects back to `/contact?sent=1#book` (or `?error=…`). Need values: `types16`, `bigfive`, `coaching`, `unsure`. Relay URL and tokens belong only in the Worker environment, never in this repository.
 
+If a completed profile is still in this browser, the form offers an opt-in. Only a ticked box adds `share_type` (`1`), `type_code` (the four-letter type) and `type_detail` (a short note of the four leanings, under 500 characters). The statement answers are not sent. No result in this browser, or an unticked box, means those fields are omitted and the enquiry can still be sent. A sitting that never becomes an enquiry is not stored. The opt-in payload is covered by `tests/share.test.js` (`node tests/share.test.js`).
+
 ## Name and trademarks
 
 This site uses **Dr Elijah Ting** / **Dr Elijah Ting, ED – L&D**. It does not use trademarked instrument names.
