@@ -32,7 +32,19 @@ Automated fixtures live in `tests/score.test.js` (run `node tests/score.test.js`
 
 The contact form is a plain HTML form that posts to https://big5.drelijah.org/api/enquiry (the b5 Worker), the same endpoint as the drelijah.org contact form. The Worker saves the enquiry, sends the owner a Telegram notice and an email through the existing relay, and redirects back to `/contact?sent=1#book` (or `?error=…`). Need values: `types16`, `bigfive`, `coaching`, `unsure`. Relay URL and tokens belong only in the Worker environment, never in this repository.
 
-If a completed profile is still in this browser, the form offers an opt-in. Only a ticked box adds `share_type` (`1`), `type_code` (the four-letter type) and `type_detail` (a short note of the four leanings, under 500 characters). The statement answers are not sent. No result in this browser, or an unticked box, means those fields are omitted and the enquiry can still be sent. A sitting that never becomes an enquiry is not stored. The opt-in payload is covered by `tests/share.test.js` (`node tests/share.test.js`).
+If a completed profile is still in this browser, the form offers an opt-in. Only a ticked box adds `share_type` (`1`), `type_code` (the four-letter type) and `type_detail` (a short note of the four leanings, under 500 characters). If this browser already has a result number for that completion, the same ticked box also adds `type_result_id`. The statement answers are not sent. No result in this browser, or an unticked box, means those fields are omitted, including `type_result_id`, and the enquiry can still be sent. Completing the profile stores the type under a result number. It does not create an enquiry. The opt-in payload is covered by `tests/share.test.js` (`node tests/share.test.js`).
+
+## Result number
+
+When the 40 statements are complete and a type has been computed, the results page sends one `POST` to `https://big5.drelijah.org/api/types-result`. The JSON body is `type_code` (the four-letter type already computed in the browser) and, when it is present and under 500 characters, `type_detail` (the same short leaning note as the enquiry opt-in). The body has no name, no email, and no statement answers. The response is `{ "id" }` where `id` is 24 hexadecimal characters. That result number is shown on the results page, with a line that the person can quote it if they contact Dr Elijah Ting.
+
+The number is kept in `sessionStorage` under `types-result`, keyed by that set of answers. Refreshing the results page, or opening the results again in the same browser session, reuses the number. A different set of answers is a new completion and is saved on its own. If the request fails, the type is still shown, and the page says that a result number could not be issued.
+
+Saving a profile does not send an enquiry. Mail and the private-message alert stay on the enquiry form.
+
+`POST /api/types-result` is the contract for the Worker in `elijahtingmk/b5` (origin allowed: `https://types.drelijah.org` only). On 23 November 2026 that route was not on the `master` branch: `web/src/app/api` contained `enquiry` and `health` only. This site calls the contract anyway. The enquiry route on that `master` branch does not yet read `type_result_id`; the field is sent only after opt-in so the Worker can tie the enquiry to the result number when it does. Because the body is `application/json`, the browser sends a CORS preflight. The Worker needs to allow `POST` and the `Content-Type` header from `https://types.drelijah.org`.
+
+`tests/result-save.test.js` (`node tests/result-save.test.js`) posts to a local stub. The test fetch refuses any host of `drelijah.org`, so the suite does not call the live endpoint.
 
 ## Name and trademarks
 

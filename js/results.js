@@ -56,4 +56,55 @@
   document.getElementById("blurb").innerHTML = paras.map(function (p) {
     return "<p>" + p + "</p>";
   }).join("");
+
+  const serial = document.getElementById("result-serial");
+  const serialId = document.getElementById("result-serial-id");
+  const serialNote = document.getElementById("result-serial-note");
+
+  function showSerial(kind, id) {
+    if (!serial || !serialNote) return;
+    serial.hidden = false;
+    if (serialId) {
+      serialId.hidden = kind !== "ready";
+      serialId.textContent = kind === "ready" ? id : "";
+    }
+    serialNote.textContent =
+      kind === "ready"
+        ? "If you contact Dr Elijah Ting, you can quote this number."
+        : kind === "pending"
+          ? "Issuing a result number."
+          : "A result number could not be issued. The type above is still your result.";
+  }
+
+  try {
+    const detail = typeof typeDetail === "function" ? typeDetail(result) : "";
+    const issued =
+      typeof readIssuedResultId === "function"
+        ? readIssuedResultId(sessionStorage, raw)
+        : "";
+    if (issued) {
+      showSerial("ready", issued);
+    } else if (typeof saveCompletedType !== "function" || typeof window.fetch !== "function") {
+      showSerial("failed");
+    } else {
+      showSerial("pending");
+      saveCompletedType({
+        answersRaw: raw,
+        typeCode: result.type,
+        detail: detail,
+        storage: sessionStorage,
+        fetch: window.fetch.bind(window)
+      }).then(
+        function (outcome) {
+          if (outcome && outcome.id) showSerial("ready", outcome.id);
+          else showSerial("failed");
+        },
+        function () {
+          showSerial("failed");
+        }
+      );
+    }
+  } catch (e) {
+    showSerial("failed");
+  }
 })();

@@ -2,6 +2,8 @@
 // big5.drelijah.org, which redirects back here with ?sent=1 or ?error=….
 // A completed profile stays in sessionStorage until the visitor opts in.
 // Only then are share_type, type_code and type_detail added to this submit.
+// type_result_id is added in that same case, and only when this browser
+// already holds a result number for this completion.
 (function () {
   const form = document.getElementById("enquiry-form");
   if (!form) return;
@@ -68,12 +70,25 @@
 
   // Hidden inputs exist only for a real opt-in. The checkbox itself has no
   // name, so an unticked or result-less form cannot submit share_type.
+  function currentResultId() {
+    if (typeof readIssuedResultId !== "function") return "";
+    try {
+      return readIssuedResultId(sessionStorage, sessionStorage.getItem("types-answers"));
+    } catch (e) {
+      return "";
+    }
+  }
+
   function applySharePayload() {
     form.querySelectorAll("[data-share-field]").forEach(function (input) {
       input.remove();
     });
     if (typeof shareFields !== "function") return;
-    const fields = shareFields(Boolean(optIn && optIn.checked), currentResult());
+    const fields = shareFields(
+      Boolean(optIn && optIn.checked),
+      currentResult(),
+      currentResultId()
+    );
     Object.keys(fields).forEach(function (name) {
       const input = document.createElement("input");
       input.type = "hidden";
