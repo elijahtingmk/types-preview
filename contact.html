@@ -31,7 +31,9 @@
              enquiry, sends the alerts, then redirects back here with ?sent=1 or
              ?error=…. share_type, type_code and type_detail are added by
              js/contact.js only when the visitor opts in and a completed result
-             is already in this browser. To switch on Cloudflare Turnstile, put
+             is already in this browser. type_result_id is added in that same
+             case, when this browser already holds a result number. To switch
+             on Cloudflare Turnstile, put
              its site key in data-turnstile-sitekey and set TURNSTILE_SECRET on
              the b5 Worker. -->
         <form class="form" id="enquiry-form" data-turnstile-sitekey=""
@@ -67,7 +69,7 @@
               <input type="checkbox" id="share-type-opt-in" value="1">
               <span>Share my 16-type result (<span id="share-type-code"></span>) with Dr Elijah Ting.</span>
             </label>
-            <p class="share-note">Tick this only if you want that result included. The note below is what would be sent. Your answers stay in this browser.</p>
+            <p class="share-note">Tick this only if you want that result included. The note below is what would be sent, along with the result number if this browser already has one. Your answers stay in this browser.</p>
             <p class="share-note" id="share-type-detail"></p>
           </div>
           <p class="instruction" id="share-type-none">There is no completed 16-type result in this browser, so none will be included. You can still send the enquiry.</p>
@@ -85,6 +87,7 @@
   <script src="js/items.js"></script>
   <script src="js/score.js"></script>
   <script src="js/share.js"></script>
+  <script src="js/result-save.js"></script>
   <script src="js/contact.js"></script>
 </body>
 </html>

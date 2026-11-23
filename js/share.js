@@ -40,18 +40,29 @@ function typeDetail(result) {
   return text.length > 480 ? text.slice(0, 480) : text;
 }
 
-function shareFields(optedIn, result) {
+function shareResultId(id) {
+  if (typeof id !== "string") return "";
+  const value = id.trim().toLowerCase();
+  return /^[0-9a-f]{24}$/.test(value) ? value : "";
+}
+
+function shareFields(optedIn, result, resultId) {
   if (!optedIn || !result || typeof result.type !== "string") return {};
   if (!/^[EI][NS][TF][JP]$/.test(result.type)) return {};
   const detail = typeDetail(result);
   if (!detail || detail.length > 500) return {};
-  return {
+  const fields = {
     share_type: "1",
     type_code: result.type,
     type_detail: detail
   };
+  // Only an opt-in reaches this point. A result number from this browser is
+  // attached then, and only then, so an unticked box cannot link the person.
+  const serial = shareResultId(resultId);
+  if (serial) fields.type_result_id = serial;
+  return fields;
 }
 
 if (typeof module !== "undefined") {
-  module.exports = { storedProfile, typeDetail, shareFields };
+  module.exports = { storedProfile, typeDetail, shareFields, shareResultId };
 }

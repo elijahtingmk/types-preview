@@ -69,10 +69,14 @@ function assertOmitted(fields) {
   assert.ok(!Object.prototype.hasOwnProperty.call(fields, "share_type"));
   assert.ok(!Object.prototype.hasOwnProperty.call(fields, "type_code"));
   assert.ok(!Object.prototype.hasOwnProperty.call(fields, "type_detail"));
+  assert.ok(!Object.prototype.hasOwnProperty.call(fields, "type_result_id"));
 }
 
+const SERIAL = "58a70606a835c400c8b38e84";
 assertOmitted(shareFields(false, enfjResult));
+assertOmitted(shareFields(false, enfjResult, SERIAL));
 assertOmitted(shareFields(true, null));
+assertOmitted(shareFields(true, null, SERIAL));
 assertOmitted(shareFields(true, storedProfile(rawFrom(partial), ITEMS, profile)));
 assertOmitted(shareFields(true, { type: "NOPE", pairs: enfjResult.pairs }));
 assertOmitted(shareFields(true, { type: "ENFJ", pairs: [] }));
@@ -83,8 +87,28 @@ assert.strictEqual(shared.type_code, "ENFJ");
 assert.strictEqual(shared.type_detail, typeDetail(enfjResult));
 assert.ok(shared.type_detail.length < 500);
 assert.deepStrictEqual(Object.keys(shared).sort(), ["share_type", "type_code", "type_detail"]);
+assert.ok(!Object.prototype.hasOwnProperty.call(shared, "type_result_id"));
 assert.ok(!shared.type_detail.includes("Am the life of the party"));
 assert.ok(!JSON.stringify(shared).includes(JSON.stringify(enfj)));
+
+const withSerial = shareFields(true, enfjResult, "58A70606A835C400C8B38E84");
+assert.strictEqual(withSerial.share_type, "1");
+assert.strictEqual(withSerial.type_code, "ENFJ");
+assert.strictEqual(withSerial.type_detail, typeDetail(enfjResult));
+assert.strictEqual(withSerial.type_result_id, SERIAL);
+assert.deepStrictEqual(
+  Object.keys(withSerial).sort(),
+  ["share_type", "type_code", "type_detail", "type_result_id"]
+);
+
+const trimmedSerial = shareFields(true, enfjResult, "  " + SERIAL + "  ");
+assert.strictEqual(trimmedSerial.type_result_id, SERIAL);
+
+const badSerial = shareFields(true, enfjResult, "not-a-result-number");
+assert.strictEqual(badSerial.type_code, "ENFJ");
+assert.ok(!Object.prototype.hasOwnProperty.call(badSerial, "type_result_id"));
+assert.ok(!Object.prototype.hasOwnProperty.call(shareFields(true, enfjResult, "58a70606a835c400c8b38e8"), "type_result_id"));
+assert.ok(!Object.prototype.hasOwnProperty.call(shareFields(true, enfjResult, ""), "type_result_id"));
 
 const sharedMid = shareFields(true, storedProfile(rawFrom(mid), ITEMS, profile));
 assert.strictEqual(sharedMid.type_code, "ISTP");
@@ -96,7 +120,10 @@ const contactHtml = fs.readFileSync(path.join(root, "contact.html"), "utf8");
 const contactJs = fs.readFileSync(path.join(root, "js/contact.js"), "utf8");
 const privacy = fs.readFileSync(path.join(root, "privacy.html"), "utf8");
 const shareJs = fs.readFileSync(path.join(root, "js/share.js"), "utf8");
-const bundle = [contactHtml, contactJs, privacy, shareJs].join("\n");
+const resultSaveJs = fs.readFileSync(path.join(root, "js/result-save.js"), "utf8");
+const resultsJs = fs.readFileSync(path.join(root, "js/results.js"), "utf8");
+const resultsHtml = fs.readFileSync(path.join(root, "results.html"), "utf8");
+const bundle = [contactHtml, contactJs, privacy, shareJs, resultSaveJs, resultsJs, resultsHtml].join("\n");
 
 assert.ok(contactHtml.includes('action="https://big5.drelijah.org/api/enquiry"'));
 assert.ok(contactHtml.includes('name="website"'));
@@ -106,13 +133,29 @@ assert.ok(contactHtml.includes("privacy.html"));
 assert.ok(contactHtml.includes('id="enquiry-consent"'));
 assert.ok(contactHtml.includes("Your contact details are used only to reply to you."));
 assert.ok(contactHtml.includes("Your type result is stored only if you opt in to share it."));
+assert.ok(contactHtml.includes('<input type="checkbox" id="share-type-opt-in" value="1">'));
+assert.ok(!/id="share-type-opt-in"[^>]*\bchecked\b/.test(contactHtml));
+assert.ok(contactHtml.includes('src="js/result-save.js"'));
+assert.ok(contactJs.includes("readIssuedResultId"));
+assert.ok(contactJs.includes("currentResultId"));
 assert.ok(!/mbti|myers-briggs/i.test(bundle));
 assert.ok(!/fetch\s*\(|sendBeacon|XMLHttpRequest|navigator\.sendBeacon/.test(contactJs + shareJs));
 assert.ok(contactJs.includes("shareFields"));
 assert.ok(contactJs.includes("data-share-field"));
+assert.ok(privacy.includes("They are not sent to Dr Elijah Ting, and they are not stored, unless you later choose to paste them into a message yourself."));
+assert.ok(privacy.includes("under a result number, with no name and no email"));
+assert.ok(privacy.includes("so you can quote it if you get in touch"));
+assert.ok(privacy.includes("linked to your name or email only if you send the enquiry form and opt in"));
+assert.ok(privacy.includes("The result number is sent only when you tick that option."));
+assert.ok(privacy.includes("If the box is left unticked, the number is not sent."));
 assert.ok(privacy.includes("second inbox used for practice administration"));
 assert.ok(privacy.includes("Malaysia’s Personal Data Protection Act"));
 assert.ok(privacy.includes("only if you tick that option"));
+assert.ok(privacy.includes("Someone who only takes the test is not stored under a name or an email address."));
+assert.ok(!privacy.includes("leaves no record"));
+assert.ok(resultsHtml.includes('id="result-serial"'));
+assert.ok(resultsJs.includes("If you contact Dr Elijah Ting, you can quote this number."));
+assert.ok(resultsJs.includes("A result number could not be issued. The type above is still your result."));
 assert.strictEqual(fs.readFileSync(path.join(root, "CNAME"), "utf8").trim(), "types.drelijah.org");
 
 console.log("All share fixtures passed.");

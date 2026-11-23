@@ -384,6 +384,33 @@ p:last-child { margin-bottom: 0; }
 }
 .balance-note { color: var(--muted); max-width: 32rem; margin: 0 auto 1rem; }
 
+.result-serial {
+  margin: 1.35rem auto 0.25rem;
+  max-width: 34rem;
+  padding: 0.85rem 1rem 1rem;
+  border: 1px solid var(--line);
+  border-radius: 0.75rem;
+  background: var(--white);
+  text-align: center;
+}
+.result-serial .kicker { margin-bottom: 0.35rem; }
+.result-serial-id {
+  font-family: ui-monospace, "Cascadia Code", "Segoe UI Mono", Menlo, Consolas, monospace;
+  font-size: clamp(0.92rem, 2.6vw, 1.05rem);
+  letter-spacing: 0.04em;
+  font-weight: 600;
+  color: var(--navy);
+  margin: 0 0 0.4rem;
+  user-select: all;
+  word-break: break-all;
+}
+.result-serial-note {
+  margin: 0 auto;
+  max-width: 28rem;
+  color: var(--muted);
+  font-size: 0.95rem;
+}
+
 .pairs {
   display: grid;
   gap: 1.1rem;
