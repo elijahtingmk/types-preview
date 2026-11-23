@@ -29,8 +29,11 @@
         <p class="notice notice-error" id="enquiry-error" hidden role="alert">Please check the form and try again.</p>
         <!-- Posts to the enquiry endpoint on big5.drelijah.org, which saves the
              enquiry, sends the alerts, then redirects back here with ?sent=1 or
-             ?error=…. To switch on Cloudflare Turnstile, put its site key in
-             data-turnstile-sitekey and set TURNSTILE_SECRET on the b5 Worker. -->
+             ?error=…. share_type, type_code and type_detail are added by
+             js/contact.js only when the visitor opts in and a completed result
+             is already in this browser. To switch on Cloudflare Turnstile, put
+             its site key in data-turnstile-sitekey and set TURNSTILE_SECRET on
+             the b5 Worker. -->
         <form class="form" id="enquiry-form" data-turnstile-sitekey=""
               action="https://big5.drelijah.org/api/enquiry" method="post">
           <input type="hidden" name="from" value="">
@@ -59,10 +62,19 @@
             <textarea name="message" maxlength="2000"></textarea>
           </label>
           <div data-turnstile-slot></div>
+          <div id="share-type" class="share-type" hidden>
+            <label class="check">
+              <input type="checkbox" id="share-type-opt-in" value="1">
+              <span>Share my 16-type result (<span id="share-type-code"></span>) with Dr Elijah Ting.</span>
+            </label>
+            <p class="share-note">Tick this only if you want that result included. The note below is what would be sent. Your answers stay in this browser.</p>
+            <p class="share-note" id="share-type-detail"></p>
+          </div>
+          <p class="instruction" id="share-type-none">There is no completed 16-type result in this browser, so none will be included. You can still send the enquiry.</p>
+          <p class="instruction" id="enquiry-consent">Your contact details are used only to reply to you. Your type result is stored only if you opt in to share it. See the <a href="privacy.html">privacy notice</a>.</p>
           <div>
             <button class="btn btn-primary" type="submit">Send the enquiry</button>
           </div>
-          <p class="instruction">Your details are used only to reply to you. See the <a href="privacy.html">privacy notice</a>.</p>
         </form>
         </div>
       </div>
@@ -70,6 +82,9 @@
   </main>
   <footer class="site-footer" id="site-footer"></footer>
   <script src="js/chrome.js"></script>
+  <script src="js/items.js"></script>
+  <script src="js/score.js"></script>
+  <script src="js/share.js"></script>
   <script src="js/contact.js"></script>
 </body>
 </html>
